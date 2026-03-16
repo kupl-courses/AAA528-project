@@ -1190,19 +1190,14 @@ method mContained_Correct(v:array<int>,w:array<int>,n:int,m:int) returns (b:bool
     }
 }
 
-predicate beq2(a: array<int>, b: array<int>, k1: int, k2: int)
-{
-    forall i :: 0 <= k1 <= i <= k2 < a.Length && k2 < b.Length  ==> a[i] == b[i]
-}
-
 method merge_Incorrect(a0 : array<int>, l : int, m : int, u : int) returns (a : array<int>)
     requires 0 <= a0.Length <= 10 && 0 <= l <= u < a0.Length && m == (l + u) / 2 
     requires sorted (a0, l, m)
     requires sorted (a0, m + 1, u)
     ensures a.Length == a0.Length
     ensures sorted (a, l, u)
-    ensures beq2(a, a0, 0, l - 1)
-    ensures beq2(a, a0, u + 1, a0.Length - 1)
+    ensures beq(a, a0, 0, l - 1)
+    ensures beq(a, a0, u + 1, a0.Length - 1)
 {
     var i : int; 
     var j : int; 
@@ -1227,7 +1222,7 @@ method merge_Incorrect(a0 : array<int>, l : int, m : int, u : int) returns (a : 
         // dafny may not need these
         invariant buf.Length == u - l + 1
         invariant a.Length == a0.Length
-        invariant beq2 (a, a0, 0, a.Length - 1)
+        invariant beq(a, a0, 0, a.Length - 1)
         invariant 0 <= a0.Length <= 10 && 0 <= l <= u < a0.Length && m == (l + u) / 2
         invariant sorted (a0, l, m)
         invariant sorted (a0, m + 1, u)
@@ -1252,8 +1247,8 @@ method merge_Incorrect(a0 : array<int>, l : int, m : int, u : int) returns (a : 
 
     while (k < buf.Length)
         invariant 0 <= k && k <= buf.Length
-        invariant beq2(a, a0, 0, l - 1)
-        invariant beq2(a, a0, u + 1, a0.Length - 1)
+        invariant beq(a, a0, 0, l - 1)
+        invariant beq(a, a0, u + 1, a0.Length - 1)
         invariant forall x :: 0 <= x < k ==> a[l + x] == buf[x]
         invariant sorted(a, l, l + k - 1)
         invariant sorted (buf, 0, buf.Length - 1) 
@@ -1277,8 +1272,8 @@ method merge_Correct(a0 : array<int>, l : int, m : int, u : int) returns (a : ar
     requires sorted (a0, m + 1, u)
     ensures a.Length == a0.Length
     ensures sorted (a, l, u)
-    ensures beq2(a, a0, 0, l - 1)
-    ensures beq2(a, a0, u + 1, a0.Length - 1)
+    ensures beq(a, a0, 0, l - 1)
+    ensures beq(a, a0, u + 1, a0.Length - 1)
 {
     var i : int; 
     var j : int; 
@@ -1303,7 +1298,7 @@ method merge_Correct(a0 : array<int>, l : int, m : int, u : int) returns (a : ar
         // dafny may not need these
         invariant buf.Length == u - l + 1
         invariant a.Length == a0.Length
-        invariant beq2 (a, a0, 0, a.Length - 1)
+        invariant beq(a, a0, 0, a.Length - 1)
         invariant 0 <= a0.Length <= 10 && 0 <= l <= u < a0.Length && m == (l + u) / 2
         invariant sorted (a0, l, m)
         invariant sorted (a0, m + 1, u)
@@ -1328,8 +1323,8 @@ method merge_Correct(a0 : array<int>, l : int, m : int, u : int) returns (a : ar
 
     while (k < buf.Length)
         invariant 0 <= k && k <= buf.Length
-        invariant beq2(a, a0, 0, l - 1)
-        invariant beq2(a, a0, u + 1, a0.Length - 1)
+        invariant beq(a, a0, 0, l - 1)
+        invariant beq(a, a0, u + 1, a0.Length - 1)
         invariant forall x :: 0 <= x < k ==> a[l + x] == buf[x]
         invariant sorted(a, l, l + k - 1)
         invariant sorted (buf, 0, buf.Length - 1) 

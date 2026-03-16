@@ -9,26 +9,27 @@ predicate partitioned(a: array<int>, l1: int, u1: int, l2: int, u2: int)
 }
 
 method BinarySearchWhile_Incorrect(a: array<int>, value: int) returns (index : int)
-	requires 0 <= a.Length && sorted(a, 0, a.Length - 1)
+    requires 0 <= a.Length && sorted(a, 0, a.Length - 1)
 	ensures (0 <= index ==> index < a.Length && a[index] == value) 
 	ensures (index < 0 ==> forall k :: 0 <= k < a.Length ==> a[k] != value)
 {
-  var low : int := 0; 
-  var high : int := a.Length; 
-  var mid : int;
+    var low : int := 0; 
+    var high : int := a.Length; 
+    var mid : int;
 
-  while (low < high)
-    invariant sorted(a, 0, a.Length - 1) 
-    invariant 0 <= low <= high <= a.Length
-    invariant forall i :: 0 < i < low ==> a[i] != value   
-    invariant forall i :: high <= i < a.Length ==> a[i] != value
-  {
-    mid := (low + high) / 2;
-    if (a[mid] < value) { low := mid + 1; }
-    else if (value < a[mid]) { high := mid; }
-    else { return mid; }
-  }
-  return -1;
+    while (low < high)
+        invariant sorted(a, 0, a.Length - 1) 
+        invariant 0 <= low <= high <= a.Length
+        invariant forall i :: 0 < i < low ==> a[i] != value   
+        invariant forall i :: high <= i < a.Length ==> a[i] != value
+    {
+        mid := (low + high) / 2;
+        if (a[mid] < value) { low := mid + 1; }
+        else if (value < a[mid]) { high := mid; }
+        else { return mid; }
+    }
+
+    return -1;
 }
 
 method BinarySearchWhile_Correct(a: array<int>, value: int) returns (index : int)
@@ -36,28 +37,29 @@ method BinarySearchWhile_Correct(a: array<int>, value: int) returns (index : int
 	ensures (0 <= index ==> index < a.Length && a[index] == value) 
 	ensures (index < 0 ==> forall k :: 0 <= k < a.Length ==> a[k] != value)
 {
-  var low : int := 0; 
-  var high : int := a.Length; 
-  var mid : int;
+    var low : int := 0; 
+    var high : int := a.Length; 
+    var mid : int;
 
-  while (low < high)
-    invariant sorted(a, 0, a.Length - 1) 
-    invariant 0 <= low <= high <= a.Length
-    invariant 0 < low ==> a[0] != value 
-    invariant forall i :: 0 < i < low ==> a[i] != value   
-    invariant forall i :: high <= i < a.Length ==> a[i] != value
-  {
-    mid := (low + high) / 2;
-    if (a[mid] < value) { low := mid + 1; }
-    else if (value < a[mid]) { high := mid; }
-    else { return mid; }
-  }
-  return -1;
+    while (low < high)
+        invariant sorted(a, 0, a.Length - 1) 
+        invariant 0 <= low <= high <= a.Length
+        invariant 0 < low ==> a[0] != value 
+        invariant forall i :: 0 < i < low ==> a[i] != value   
+        invariant forall i :: high <= i < a.Length ==> a[i] != value
+    {
+        mid := (low + high) / 2;
+        if (a[mid] < value) { low := mid + 1; }
+        else if (value < a[mid]) { high := mid; }
+        else { return mid; }
+    }
+
+    return -1;
 }
 
 method BubbleSort_Incorrect (a0: array<int>) returns (a: array<int>)
-  requires 0 <= a0.Length < 10
-	ensures sorted(a, 0, a.Length - 1) 
+    requires 0 <= a0.Length < 10
+    ensures sorted(a, 0, a.Length - 1) 
 {
     var i : int;
     var j : int;  
@@ -78,7 +80,7 @@ method BubbleSort_Incorrect (a0: array<int>) returns (a: array<int>)
 			invariant sorted (a, i, a.Length - 1)
 		{
 			if (a[j] > a[j+1]) {
-        a[j], a[j+1] := a[j+1], a[j];
+                a[j], a[j+1] := a[j+1], a[j];
 			}
 			j := j + 1;
 		}
@@ -87,7 +89,7 @@ method BubbleSort_Incorrect (a0: array<int>) returns (a: array<int>)
 }
 
 method BubbleSort_Correct (a0: array<int>) returns (a: array<int>)
-  requires 0 <= a0.Length < 10
+    requires 0 <= a0.Length < 10
 	ensures sorted(a, 0, a.Length - 1) 
 {
     var i : int;
@@ -110,7 +112,7 @@ method BubbleSort_Correct (a0: array<int>) returns (a: array<int>)
 			invariant sorted (a, i, a.Length - 1)
 		{
 			if (a[j] > a[j+1]) {
-        a[j], a[j+1] := a[j+1], a[j];
+                a[j], a[j+1] := a[j+1], a[j];
 			}
 			j := j + 1;
 		}
@@ -121,7 +123,7 @@ method BubbleSort_Correct (a0: array<int>) returns (a: array<int>)
 method FindMax_Incorrect (a: array<int>) returns (r: int)
 	requires 0 < a.Length 
 	ensures forall k :: 0 <= k < a.Length ==> a[k] <= r
-  ensures exists k :: 0 <= k < a.Length && a[k] == r
+    ensures exists k :: 0 <= k < a.Length && a[k] == r
 {
 	var i : int := 0;
 	r := a[0];
@@ -136,11 +138,10 @@ method FindMax_Incorrect (a: array<int>) returns (r: int)
 	}
 }
 
-
 method FindMax_Correct (a: array<int>) returns (r: int)
 	requires 0 < a.Length 
 	ensures forall k :: 0 <= k < a.Length ==> a[k] <= r
-  ensures exists k :: 0 <= k < a.Length && a[k] == r
+    ensures exists k :: 0 <= k < a.Length && a[k] == r
 {
 	var i : int := 0;
 	r := a[0];
@@ -166,21 +167,21 @@ method CanyonSearch_Incorrect(a: array<int>, b: array<int>) returns (d: int)
     ensures forall i, j :: 0 <= i < a.Length && 0 <= j < b.Length ==> d <= Dist(a[i], b[j])
 {
     var m : int := 0; 
-		var n : int := 0; 
+	var n : int := 0; 
     d := Dist(a[0], b[0]);
     
     while (m < a.Length andalso n < b.Length) 
-				invariant sorted(a, 0, a.Length - 1) && sorted(b, 0, b.Length - 1)
+		invariant sorted(a, 0, a.Length - 1) && sorted(b, 0, b.Length - 1)
         invariant 0 <= m <= a.Length && 0 <= n <= b.Length
         invariant exists i, j :: 0 <= i < a.Length && 0 <= j < b.Length && d == Dist(a[i], b[j])
         invariant forall i, j :: 0 <= i < a.Length && 0 <= j < b.Length ==> d <= Dist(a[i], b[j]) // || (m <= i && n <= j)
     {
         d :=  if (Dist(b[n], a[m]) < d) then Dist(b[n], a[m]) else d;
         if (a[m] <= b[n]) {
-					m := m + 1;
-				} else {
-					n := n + 1;
-				}
+			m := m + 1;
+		} else {
+			n := n + 1;
+		}
     }
 }
 
@@ -191,21 +192,21 @@ method CanyonSearch_Correct(a: array<int>, b: array<int>) returns (d: int)
     ensures forall i, j :: 0 <= i < a.Length && 0 <= j < b.Length ==> d <= Dist(a[i], b[j])
 {
     var m : int := 0; 
-		var n : int := 0; 
+	var n : int := 0; 
     d := Dist(a[0], b[0]);
     
     while (m < a.Length andalso n < b.Length) 
-				invariant sorted(a, 0, a.Length - 1) && sorted(b, 0, b.Length - 1)
+		invariant sorted(a, 0, a.Length - 1) && sorted(b, 0, b.Length - 1)
         invariant 0 <= m <= a.Length && 0 <= n <= b.Length
         invariant exists i, j :: 0 <= i < a.Length && 0 <= j < b.Length && d == Dist(a[i], b[j])
         invariant forall i, j :: 0 <= i < a.Length && 0 <= j < b.Length ==> d <= Dist(a[i], b[j]) || (m <= i && n <= j)
     {
         d :=  if (Dist(b[n], a[m]) < d) then Dist(b[n], a[m]) else d;
         if (a[m] <= b[n]) {
-					m := m + 1;
-				} else {
-					n := n + 1;
-				}
+			m := m + 1;
+		} else {
+			n := n + 1;
+		}
     }
 }
 
@@ -229,8 +230,8 @@ method FirstEven_Incorrect(a: array<int>) returns (n: int)
 
     while (i < a.Length)
         invariant 0 <= i <= a.Length
-        invariant 0 <= firstEven < i ==> IsEven(a[firstEven]) //wrong
-        //invariant (0 <= firstEven < i) || firstEven == -1 //to be added
+        invariant 0 <= firstEven < i ==> IsEven(a[firstEven]) 
+        //invariant (0 <= firstEven < i) || firstEven == -1 
         invariant firstEven == -1 ==> (forall k :: 0 <= k < i ==> !IsEven(a[k]))
         invariant firstEven != -1 ==> (forall k :: 0 <= k < firstEven ==> IsOdd(a[k]))
         // dafny may not need these
@@ -249,7 +250,6 @@ method FirstEven_Incorrect(a: array<int>) returns (n: int)
     n := a[firstEven];
 }
 
-
 method FirstEven_Correct(a: array<int>) returns (n: int)
     requires 2 <= a.Length <= 10
     requires exists i :: 0 <= i < a.Length && IsEven(a[i])
@@ -260,7 +260,7 @@ method FirstEven_Correct(a: array<int>) returns (n: int)
 
     while (i < a.Length)
         invariant 0 <= i <= a.Length
-        invariant (firstEven == -1 || (0 <= firstEven && firstEven < i && IsEven(a[firstEven]))) //correct invariant
+        invariant (firstEven == -1 || (0 <= firstEven && firstEven < i && IsEven(a[firstEven])))
         invariant firstEven == -1 ==> (forall k :: 0 <= k < i ==> !IsEven(a[k]))
         invariant firstEven != -1 ==> (forall k :: 0 <= k < firstEven ==> IsOdd(a[k]))
         // dafny may not need these
@@ -292,10 +292,9 @@ method FirstEvenOddDifference_Incorrect (a: array<int>) returns (diff: int)
 
     while (i < a.Length)
         invariant 0 <= i <= a.Length
-        invariant 0 <= firstEven < i ==> IsEven(a[firstEven]) //wrong invariant 
-        //invariant (0 <= firstEven && firstEven < i) || firstEven == -1 // to be added
+        invariant 0 <= firstEven < i ==> IsEven(a[firstEven]) 
+        //invariant (0 <= firstEven && firstEven < i) || firstEven == -1 
         invariant (firstOdd == -1 || (0 <= firstOdd && firstOdd < i && IsOdd(a[firstOdd])))
-        //invariant 0 <= firstOdd && firstOdd < i ==> IsOdd(a[firstOdd]) 
         invariant firstEven == -1 ==> (forall k :: 0 <= k < i ==> !IsEven(a[k]))
         invariant firstOdd == -1 ==> (forall k :: 0 <= k < i ==> !IsOdd(a[k]))
         invariant firstEven != -1 ==> (forall k :: 0 <= k < firstEven ==> IsOdd(a[k]))
@@ -322,7 +321,6 @@ method FirstEvenOddDifference_Incorrect (a: array<int>) returns (diff: int)
     }
     diff := a[firstEven] - a[firstOdd];
 }
-
 
 method FirstEvenOddDifference_Correct (a: array<int>) returns (diff: int)
     requires 2 <= a.Length <= 10
@@ -366,10 +364,9 @@ method FirstEvenOddDifference_Correct (a: array<int>) returns (diff: int)
     diff := a[firstEven] - a[firstOdd];
 }
 
-
 predicate beq(a: array<int>, b: array<int>, k1: int, k2: int)
 {
-  forall i :: k1 <= i <= k2 ==> a[i] == b[i]
+    forall i :: k1 <= i <= k2 ==> a[i] == b[i]
 }
 
 function random (l: int, u: int) : int
@@ -378,152 +375,149 @@ function random (l: int, u: int) : int
 }
 
 method InsertionSort_Incorrect1(a0:array<int>) returns (a:array<int>)
-  requires 2 <= a0.Length <= 10
-  ensures sorted(a, 0, a.Length-1)
+    requires 2 <= a0.Length <= 10
+    ensures sorted(a, 0, a.Length-1)
 {
-  var x : int := 1;
-  var d : int;
+    var x : int := 1;
+    var d : int;
 
-  a := a0;
+    a := a0;
 
-  while (x < a.Length)
-    invariant 1 <= x <= a.Length
-    invariant sorted(a, 0, x-1)
-    //dafny may not need these
-    invariant 2 <= a0.Length <= 10
-  {
-    d := x;
-    while (d >= 1 andalso a[d-1] > a[d])
-      invariant 0 <= d <= x
-      invariant forall i,j :: 0 <= i < j < d ==> a[i] <= a[j] //wrong
-      //invariant forall i,j ::( 0 <= i < j <= x && j != d) ==> a[i] <= a[j]  //correct
-      //dafny may not need these
-      invariant 2 <= a0.Length <= 5 
-      invariant 1 <= x < a.Length 
+    while (x < a.Length)
+        invariant 1 <= x <= a.Length
+        invariant sorted(a, 0, x-1)
+        // dafny may not need these
+        invariant 2 <= a0.Length <= 10
     {
-      a[d-1], a[d] := a[d], a[d-1];
-      d := d-1;
+        d := x;
+        while (d >= 1 andalso a[d-1] > a[d])
+            invariant 0 <= d <= x
+            invariant forall i,j :: 0 <= i < j < d ==> a[i] <= a[j] //wrong
+            // dafny may not need these
+            invariant 2 <= a0.Length <= 5 
+            invariant 1 <= x < a.Length 
+        {
+            a[d-1], a[d] := a[d], a[d-1];
+            d := d-1;
+        }
+        x := x + 1;
     }
-    x := x + 1;
-  }
 }
 
 method InsertionSort_Incorrect2(a0:array<int>) returns (a:array<int>)
-  requires 2 <= a0.Length <= 10
-  ensures sorted(a, 0, a.Length-1)
+    requires 2 <= a0.Length <= 10
+    ensures sorted(a, 0, a.Length-1)
 {
-  var x : int := 1;
-  var d : int;
+    var x : int := 1;
+    var d : int;
 
-  a := a0;
+    a := a0;
 
-  while (x < a.Length)
-    invariant 1 <= x <= a.Length
-    invariant sorted(a, 0, x-1)
-    //dafny may not need these
-    invariant 2 <= a0.Length <= 10 
-  {
-    d := x;
-    while (d >= 1 andalso a[d-1] > a[d])
-      invariant 0 <= d <= x
-      invariant forall i,j :: 0 <= i < j <= x /* && j != d */ ==> a[i] <= a[j]
-      //dafny may not need these
-      invariant 2 <= a0.Length <= 10 
-      invariant 1 <= x < a.Length 
+    while (x < a.Length)
+        invariant 1 <= x <= a.Length
+        invariant sorted(a, 0, x-1)
+        // dafny may not need these
+        invariant 2 <= a0.Length <= 10 
     {
-      a[d-1], a[d] := a[d], a[d-1];
-      d := d-1;
+        d := x;
+        while (d >= 1 andalso a[d-1] > a[d])
+            invariant 0 <= d <= x
+            invariant forall i,j :: 0 <= i < j <= x /* && j != d */ ==> a[i] <= a[j]
+            // dafny may not need these
+            invariant 2 <= a0.Length <= 10 
+            invariant 1 <= x < a.Length 
+        {
+            a[d-1], a[d] := a[d], a[d-1];
+            d := d-1;
+        }
+        x := x + 1;
     }
-    x := x + 1;
-  }
 }
 
 method InsertionSort_Correct(a0:array<int>) returns (a:array<int>)
-  requires 2 <= a0.Length <= 10
-  ensures sorted(a, 0, a.Length-1)
+    requires 2 <= a0.Length <= 10
+    ensures sorted(a, 0, a.Length-1)
 {
-  var x : int := 1;
-  var d : int;
+    var x : int := 1;
+    var d : int;
 
-  a := a0;
+    a := a0;
 
-  while (x < a.Length)
-    invariant 1 <= x <= a.Length
-    invariant sorted(a, 0, x-1)
-    //dafny may not need these
-    invariant 2 <= a0.Length <= 10 
-  {
-    d := x;
-    while (d >= 1 andalso a[d-1] > a[d])
-      invariant 0 <= d <= x
-      invariant forall i,j ::( 0 <= i < j <= x && j != d) ==> a[i] <= a[j]
-      //dafny may not need these
-      invariant 2 <= a0.Length <= 10
-      invariant 1 <= x < a.Length 
+    while (x < a.Length)
+        invariant 1 <= x <= a.Length
+        invariant sorted(a, 0, x-1)
+        // dafny may not need these
+        invariant 2 <= a0.Length <= 10 
     {
-      a[d-1], a[d] := a[d], a[d-1];
-      d := d-1;
+        d := x;
+        while (d >= 1 andalso a[d-1] > a[d])
+            invariant 0 <= d <= x
+            invariant forall i,j ::( 0 <= i < j <= x && j != d) ==> a[i] <= a[j]
+            // dafny may not need these
+            invariant 2 <= a0.Length <= 10
+            invariant 1 <= x < a.Length 
+        {
+            a[d-1], a[d] := a[d], a[d-1];
+            d := d-1;
+        }
+        x := x + 1;
     }
-    x := x + 1;
-  }
 }
 
 method IsPalindrome_Incorrect(x: array<int>) returns (result: bool)
-  requires 0 <= x.Length
-  ensures result <==> (forall i :: 0 <= i < x.Length  ==> x[i] == x[x.Length - i - 1])
+    requires 0 <= x.Length
+    ensures result <==> (forall i :: 0 <= i < x.Length  ==> x[i] == x[x.Length - i - 1])
 {
-  var i :int := 0;
-  var j :int := x.Length - 1;
+    var i :int := 0;
+    var j :int := x.Length - 1;
 
-  if (x.Length==0) {
-    return true;
-  }
-  
-  result := true;
-  while (i < j)
-    invariant 0 <= i <= j+1 && 0 <= j < x.Length 
-    //invariant i + j == x.Length -1
-    invariant forall k :: 0 <= k < i ==> x[k] == x[x.Length - k - 1]
-    // dafny doesn't need these
-    invariant result == false ==> (exists k :: 0 <= k < x.Length && x[k] != x[x.Length - k - 1])
-  {
-    if (x[i] != x[j]) {
-      result := false;
-      return result;
+    if (x.Length==0) {
+      return true;
     }
-    i := i + 1;
-    j := j - 1;
-  }
+  
+    result := true;
+    while (i < j)
+        invariant 0 <= i <= j+1 && 0 <= j < x.Length 
+        //invariant i + j == x.Length -1
+        invariant forall k :: 0 <= k < i ==> x[k] == x[x.Length - k - 1]
+        // dafny may not need these
+        invariant result == false ==> (exists k :: 0 <= k < x.Length && x[k] != x[x.Length - k - 1])
+    {
+        if (x[i] != x[j]) {
+            result := false;
+            return result;
+        }
+        i := i + 1;
+        j := j - 1;
+    }
 }
 
 method IsPalindrome_Correct(x: array<int>) returns (result: bool)
-  requires 0 <= x.Length 
-  ensures result <==> (forall i :: 0 <= i < x.Length  ==> x[i] == x[x.Length - i - 1])
+    requires 0 <= x.Length 
+    ensures result <==> (forall i :: 0 <= i < x.Length  ==> x[i] == x[x.Length - i - 1])
 {
-  var i :int := 0;
-  var j :int := x.Length - 1;
-
-  if (x.Length==0) {
-    return true;
-  }
-  
-  result := true;
-  while (i < j)
-    invariant 0 <= i <= j+1 && 0 <= j < x.Length 
-    invariant i + j == x.Length -1 
-    invariant forall k :: 0 <= k < i ==> x[k] == x[x.Length - k - 1]
-    // dafny doesn't need these
-    invariant result == false ==> (exists k :: 0 <= k < x.Length && x[k] != x[x.Length - k - 1])
-  {
-    if (x[i] != x[j]) {
-      result := false;
-      return result;
+    var i :int := 0;
+    var j :int := x.Length - 1; 
+    if (x.Length==0) {
+        return true;
     }
-    i := i + 1;
-    j := j - 1;
-  }
-}
 
+    result := true;
+    while (i < j)
+        invariant 0 <= i <= j+1 && 0 <= j < x.Length 
+        invariant i + j == x.Length -1 
+        invariant forall k :: 0 <= k < i ==> x[k] == x[x.Length - k - 1]
+        // dafny may not need these
+        invariant result == false ==> (exists k :: 0 <= k < x.Length && x[k] != x[x.Length - k - 1])
+    {
+        if (x[i] != x[j]) {
+            result := false;
+            return result;
+        }
+        i := i + 1;
+        j := j - 1;
+    }
+}
 
 method LucidNumbers_Incorrect(n: int) returns (lucid: array<int>)
     requires 0 <= n 
@@ -544,7 +538,7 @@ method LucidNumbers_Incorrect(n: int) returns (lucid: array<int>)
         invariant forall j1 :: 0 <= j1 < index ==> lucid[j1] % 3 == 0
         invariant forall j2 :: 0 <= j2 < index ==> lucid[j2] <= i /* -1 */ 
         invariant forall j3, k :: 0 <= j3 < k < index ==> lucid[j3] < lucid[k]
-        //dafny doesn't need the below invariants
+        // dafny may not need these
         invariant lucid.Length == maxSize
     {
         if (i % 3 == 0) {
@@ -572,9 +566,7 @@ method LucidNumbers_Incorrect(n: int) returns (lucid: array<int>)
         j := j + 1;
     }
     lucid := resized;
-    
 }
-
 
 method LucidNumbers_Correct(n: int) returns (lucid: array<int>)
     requires 0 <= n
@@ -615,7 +607,7 @@ method LucidNumbers_Correct(n: int) returns (lucid: array<int>)
         invariant forall i :: 0 <= i < index ==> lucid[i] % 3 == 0
         invariant forall i :: 0 <= i < index ==> lucid[i] <= n
         invariant forall i, j4 :: 0 <= i < j4 < index ==> lucid[i] < lucid[j4] 
-        //dafny doesn't need the below invariants
+        // dafny may not need these
         invariant lucid.Length == maxSize
         invariant resized.Length == index
     {
@@ -623,119 +615,114 @@ method LucidNumbers_Correct(n: int) returns (lucid: array<int>)
         j := j + 1;
     }
     lucid := resized;
-    
 }
 
-
 method Partition_Incorrect(a0: array<int>, l: int, u: int) returns (pivot: int, a: array<int>)
-  requires 0 <= l <= u < a0.Length 
-  requires partitioned(a0, 0, l - 1, l, u)
-  requires partitioned(a0, l, u, u + 1, a0.Length - 1)
-  ensures a.Length == a0.Length 
-  ensures beq(a, a0, 0, l - 1)
-  ensures beq(a, a0, u + 1, a0.Length - 1)
-  ensures l <= pivot <= u 
-  ensures partitioned(a, l, pivot - 1, pivot, pivot)
-  ensures partitioned(a, pivot, pivot, pivot + 1, u)
+    requires 0 <= l <= u < a0.Length 
+    requires partitioned(a0, 0, l - 1, l, u)
+    requires partitioned(a0, l, u, u + 1, a0.Length - 1)
+    ensures a.Length == a0.Length 
+    ensures beq(a, a0, 0, l - 1)
+    ensures beq(a, a0, u + 1, a0.Length - 1)
+    ensures l <= pivot <= u 
+    ensures partitioned(a, l, pivot - 1, pivot, pivot)
+    ensures partitioned(a, pivot, pivot, pivot + 1, u)
 {
-  var pi : int := random(l, u); 
-  var pv : int;
-  var i : int := l - 1; 
-  var j : int := l; 
+    var pi : int := random(l, u); 
+    var pv : int;
+    var i : int := l - 1; 
+    var j : int := l; 
 
-  a := a0;
-  pv := a[pi]; 
-  a[pi] := a[u];
-  a[u] := pv; 
+    a := a0;
+    pv := a[pi]; 
+    a[pi] := a[u];
+    a[u] := pv; 
 
-  while (j < u) 
-    // invariant a[u] == pv 
-    invariant a.Length == a0.Length 
-    invariant beq(a, a0, 0, l - 1)
-    invariant beq(a, a0, u + 1, a0.Length - 1)
-    invariant l - 1 <= i < j && j <= u 
-    invariant forall k :: l <= k <= i ==> a[k] <= pv
-    invariant forall k :: i + 1 <= k < j ==> a[k] > pv
-  {
-    if (a[j] <= pv) {
-      i := i + 1;
-      a[i], a[j] := a[j], a[i];
+    while (j < u) 
+        // invariant a[u] == pv 
+        invariant a.Length == a0.Length 
+        invariant beq(a, a0, 0, l - 1)
+        invariant beq(a, a0, u + 1, a0.Length - 1)
+        invariant l - 1 <= i < j && j <= u 
+        invariant forall k :: l <= k <= i ==> a[k] <= pv
+        invariant forall k :: i + 1 <= k < j ==> a[k] > pv
+    {
+        if (a[j] <= pv) {
+            i := i + 1;
+            a[i], a[j] := a[j], a[i];
+        }
+        j := j + 1;
     }
-    j := j + 1;
-  }
 
-  a[i+1], a[u] := a[u], a[i+1];
-  return i+1, a; 
+    a[i+1], a[u] := a[u], a[i+1];
+    return i+1, a; 
 }
 
 method Partition_Correct(a0: array<int>, l: int, u: int) returns (pivot: int, a: array<int>)
-  requires 0 <= l <= u < a0.Length 
-  requires partitioned(a0, 0, l - 1, l, u)
-  requires partitioned(a0, l, u, u + 1, a0.Length - 1)
-  ensures a.Length == a0.Length 
-  ensures beq(a, a0, 0, l - 1)
-  ensures beq(a, a0, u + 1, a0.Length - 1)
-  ensures l <= pivot <= u 
-  ensures partitioned(a, l, pivot - 1, pivot, pivot)
-  ensures partitioned(a, pivot, pivot, pivot + 1, u)
+    requires 0 <= l <= u < a0.Length 
+    requires partitioned(a0, 0, l - 1, l, u)
+    requires partitioned(a0, l, u, u + 1, a0.Length - 1)
+    ensures a.Length == a0.Length 
+    ensures beq(a, a0, 0, l - 1)
+    ensures beq(a, a0, u + 1, a0.Length - 1)
+    ensures l <= pivot <= u 
+    ensures partitioned(a, l, pivot - 1, pivot, pivot)
+    ensures partitioned(a, pivot, pivot, pivot + 1, u)
 {
-  var pi : int := random(l, u); 
-  var pv : int;
-  var i : int := l - 1; 
-  var j : int := l; 
+    var pi : int := random(l, u); 
+    var pv : int;
+    var i : int := l - 1; 
+    var j : int := l; 
 
-  a := a0;
-  pv := a[pi]; 
-  a[pi] := a[u];
-  a[u] := pv; 
+    a := a0;
+    pv := a[pi]; 
+    a[pi] := a[u];
+    a[u] := pv; 
 
-  while (j < u) 
-    invariant a[u] == pv 
-    invariant a.Length == a0.Length 
-    invariant beq(a, a0, 0, l - 1)
-    invariant beq(a, a0, u + 1, a0.Length - 1)
-    invariant l - 1 <= i < j && j <= u 
-    invariant forall k :: l <= k <= i ==> a[k] <= pv
-    invariant forall k :: i + 1 <= k < j ==> a[k] > pv
-  {
-    if (a[j] <= pv) {
-      i := i + 1;
-      a[i], a[j] := a[j], a[i];
+    while (j < u) 
+        invariant a[u] == pv 
+        invariant a.Length == a0.Length 
+        invariant beq(a, a0, 0, l - 1)
+        invariant beq(a, a0, u + 1, a0.Length - 1)
+        invariant l - 1 <= i < j && j <= u 
+        invariant forall k :: l <= k <= i ==> a[k] <= pv
+        invariant forall k :: i + 1 <= k < j ==> a[k] > pv
+    {
+        if (a[j] <= pv) {
+            i := i + 1;
+            a[i], a[j] := a[j], a[i];
+        }
+        j := j + 1;
     }
-    j := j + 1;
-  }
 
-  a[i+1], a[u] := a[u], a[i+1];
-  return i+1, a; 
+    a[i+1], a[u] := a[u], a[i+1];
+    return i+1, a; 
 }
-
 
 method ReverseUptoK_Incorrect (s_in: array<int>, k: int) returns (s : array<int>)
     requires 2 <= k <= s_in.Length
     ensures forall i :: 0 <= i < k ==> s[i] == s_in[k - 1 - i]
     ensures forall i :: k <= i < s.Length ==> s[i] == s_in[i]
 {
-	  var l : int := k - 1; 
-	  var i : int := 0; 
+	var l : int := k - 1; 
+	var i : int := 0; 
     var tmp : int; 
     s := s_in; 
 
-	  while (i < l - i)
-		    invariant 0 <= i <= (l + 1)/2
-		    invariant forall p :: (0 <= p < i) /*|| (l - i < p && p <= l)*/ ==> s[p] == s_in[l-p]
-        //to be added: invariant forall p :: (l - i < p && p <= l) ==> s[p] == s_in[l-p]
-		    invariant forall p :: i <= p <= l - i ==> s[p] == s_in[p]
+	while (i < l - i)
+	    invariant 0 <= i <= (l + 1)/2
+	    invariant forall p :: (0 <= p < i) /*|| (l - i < p && p <= l)*/ ==> s[p] == s_in[l-p]
+	    invariant forall p :: i <= p <= l - i ==> s[p] == s_in[p]
         invariant forall p :: k <= p < s.Length ==> s[p] == s_in[p]
         // dafny may not need these
         invariant 2 <= k <= s.Length 
         invariant l == k - 1 
-	  {
+	{
         tmp := s[i]; 
         s[i] := s[l - i]; 
         s[l - i] := tmp; 
-		    i := i + 1;
-	  }
-
+	    i := i + 1;
+	}
 }
 
 method ReverseUptoK_Correct (s_in: array<int>, k: int) returns (s : array<int>)
@@ -743,98 +730,95 @@ method ReverseUptoK_Correct (s_in: array<int>, k: int) returns (s : array<int>)
     ensures forall i :: 0 <= i < k ==> s[i] == s_in[k - 1 - i]
     ensures forall i :: k <= i < s.Length ==> s[i] == s_in[i]
 {
-	  var l : int := k - 1; 
-	  var i : int := 0; 
+	var l : int := k - 1; 
+	var i : int := 0; 
     var tmp : int; 
     s := s_in; 
 
-	  while (i < l - i)
-		    invariant 0 <= i <= (l + 1)/2
-		    invariant forall p :: (0 <= p < i) || (l - i < p <= l) ==> s[p] == s_in[l-p]
-		    invariant forall p :: i <= p <= l - i ==> s[p] == s_in[p]
+	while (i < l - i)
+		invariant 0 <= i <= (l + 1)/2
+		invariant forall p :: (0 <= p < i) || (l - i < p <= l) ==> s[p] == s_in[l-p]
+		invariant forall p :: i <= p <= l - i ==> s[p] == s_in[p]
         invariant forall p :: k <= p < s.Length ==> s[p] == s_in[p]
         // dafny may not need these
         invariant 2 <= k <= s.Length 
         invariant l == k - 1 
-	  {
+	{
         tmp := s[i]; 
         s[i] := s[l - i]; 
         s[l - i] := tmp; 
-		    i := i + 1;
-	  }
-
+		i := i + 1;
+	}
 }
 
-
 method SelectionSort1_Incorrect (a0: array<int>) returns (a: array<int>)
-	  requires 0 <= a0.Length 
-	  ensures sorted(a, 0, a.Length - 1)
+	requires 0 <= a0.Length 
+	ensures sorted(a, 0, a.Length - 1)
 {
-	  var i : int := 0;
+	var i : int := 0;
     var m : int;
     var j : int;
     a := a0;
 
-	  while (i < a.Length)
-		    invariant 0 <= i <= a.Length
+	while (i < a.Length)
+		invariant 0 <= i <= a.Length
         invariant partitioned(a, 0, i-1, i, a.Length-1)
-		    invariant sorted(a, 0,i-1)
-	  {
-		    m := i;
+		invariant sorted(a, 0,i-1)
+	{
+		m := i;
         j := i;
 
         while(j < a.Length)
-	          invariant 0 <= i <= a.Length
+	        invariant 0 <= i <= a.Length
             invariant partitioned(a, 0, i-1, i, a.Length-1)
-		        invariant sorted(a, 0,i-1)
-		        invariant i <= j <= a.Length
-		        invariant i <= m < a.Length
-		        invariant forall k :: i < k < j ==> a[k] >= a[m] //wrong invariant
-            //invariant a[i] >= a[m] //to be added
-	      {
-	      	  if(a[j] < a[m]) { m := j; }
-	      	  j := j + 1;
-	      }
+		    invariant sorted(a, 0,i-1)
+		    invariant i <= j <= a.Length
+		    invariant i <= m < a.Length
+		    invariant forall k :: i < k < j ==> a[k] >= a[m] 
+            //invariant a[i] >= a[m] 
+	    {
+	      	if(a[j] < a[m]) { m := j; }
+	      	j := j + 1;
+	    }
 
         a[m], a[i] := a[i], a[m]; 
-		    i := i + 1;
-	  }
+		i := i + 1;
+	}
 }
 
 method SelectionSort1_Correct (a0: array<int>) returns (a: array<int>)
-	  requires 0 <= a0.Length 
-	  ensures sorted(a, 0, a.Length - 1)
+	requires 0 <= a0.Length 
+	ensures sorted(a, 0, a.Length - 1)
 {
-	  var i : int := 0;
+	var i : int := 0;
     var m : int;
     var j : int;
     a := a0;
 
-	  while (i < a.Length)
-		    invariant 0 <= i <= a.Length
+	while (i < a.Length)
+		invariant 0 <= i <= a.Length
         invariant partitioned(a, 0, i-1, i, a.Length-1)
-		    invariant sorted(a, 0,i-1)
-	  {
-		    m := i;
+		invariant sorted(a, 0,i-1)
+	{
+		m := i;
         j := i;
 
         while(j < a.Length)
-	          invariant 0 <= i <= a.Length
+	        invariant 0 <= i <= a.Length
             invariant partitioned(a, 0, i-1, i, a.Length-1)
-		        invariant sorted(a, 0,i-1)
-		        invariant i <= j <= a.Length
-		        invariant i <= m < a.Length
+		    invariant sorted(a, 0,i-1)
+		    invariant i <= j <= a.Length
+		    invariant i <= m < a.Length
             invariant forall k :: i <= k < j ==> a[k] >= a[m] 
-	      {
-	      	  if(a[j] < a[m]) { m := j; }
-	      	  j := j + 1;
-	      }
+	    {
+	      	if(a[j] < a[m]) { m := j; }
+	      	j := j + 1;
+	    }
 
         a[m], a[i] := a[i], a[m]; 
-		    i := i + 1;
-	  }
+		i := i + 1;
+	}
 }
-
 
 method SumOfSquaresOfFirstNOddNumbers_Incorrect (n: int) returns (sum: int)
     requires 0 <= n
@@ -952,7 +936,7 @@ method PartitionOddEven_Correct(a0: array<int>) returns (a: array<int>)
         invariant 0 <= i <= j + 1 <= a.Length
         invariant forall k :: 0 <= k < i ==> odd(a[k])
         invariant forall k :: j < k < a.Length ==> even(a[k]) 
-     {
+    {
         if (even(a[i]) andalso odd(a[j])) { a[i], a[j] := a[j], a[i]; }
         if (odd(a[i])) { i := i + 1; }
         if (even(a[j])) { j := j - 1; }
@@ -1003,7 +987,6 @@ method Union_Incorrect(a: array<int>, b: array<int>) returns (u: array<int>)
         i := i + 1;
     }
 }
-
 
 method Union_Correct(a: array<int>, b: array<int>) returns (u: array<int>)
     requires 0 <= a.Length <= 10 && 0 <= b.Length <= 10
@@ -1143,25 +1126,25 @@ method mContained_Incorrect(v:array<int>,w:array<int>,n:int,m:int) returns (b:bo
     requires v.Length <= 10 && w.Length <= 10
     ensures b <==> forall k:: 0 <= k < n ==> exists x :: 0 <= x < m && v[k] == w[x]
 {
-	  var i: int := 0;
-	  var j: int := 0;
+    var i: int := 0;
+    var j: int := 0;
 
-	  while (i < n andalso j < m andalso (v[i] >= w[j]))
-	      invariant 0 <= i <= n
-	      invariant 0 <= j <= m
+	while (i < n andalso j < m andalso (v[i] >= w[j]))
+	    invariant 0 <= i <= n
+	    invariant 0 <= j <= m
         invariant forall k :: 0 <= k < i ==> (exists x:: 0 <= x < j && v[k] == w[x]) 
-	      //invariant i < n ==> !(exists x:: 0 <= x < j && v[i] == w[x]) 
+	    //invariant i < n ==> !(exists x:: 0 <= x < j && v[i] == w[x]) 
         // dafny may not need these
         invariant strictSorted(v)
-	      invariant strictSorted(w)
+	    invariant strictSorted(w)
         invariant n <= m && n >= 0
         invariant v.Length >= n && w.Length >= m
-	  {	
-	  	  if(v[i] == w[j]){
-	  	  	i:=i+1;
-	  	  }
-	  	  j:=j+1;
-	  }
+	{	
+	  	if(v[i] == w[j]){
+	  		i:=i+1;
+	  	}
+	  	j:=j+1;
+	}
 
     if (i == n){
         b := true;
@@ -1179,25 +1162,25 @@ method mContained_Correct(v:array<int>,w:array<int>,n:int,m:int) returns (b:bool
     requires v.Length <= 10 && w.Length <= 10
     ensures b <==> forall k:: 0 <= k < n ==> exists x :: 0 <= x < m && v[k] == w[x]
 {
-	  var i: int := 0;
-	  var j: int := 0;
+	var i: int := 0;
+	var j: int := 0;
 
-	  while (i < n andalso j < m andalso (v[i] >= w[j]))
-	      invariant 0 <= i <= n
-	      invariant 0 <= j <= m
+	while (i < n andalso j < m andalso (v[i] >= w[j]))
+	    invariant 0 <= i <= n
+	    invariant 0 <= j <= m
         invariant forall k :: 0 <= k < i ==> (exists x:: 0 <= x < j && v[k] == w[x]) 
-	      invariant i < n ==> !(exists x:: 0 <= x < j && v[i] == w[x]) 
+	    invariant i < n ==> !(exists x:: 0 <= x < j && v[i] == w[x]) 
         // dafny may not need these
         invariant strictSorted(v)
-	      invariant strictSorted(w)
+	    invariant strictSorted(w)
         invariant n <= m && n >= 0
         invariant v.Length >= n && w.Length >= m
-	  {	
-	  	  if(v[i] == w[j]){
-	  	  	  i:=i+1;
-	  	  }
-	  	  j:=j+1;
-	  }
+	{	
+		if(v[i] == w[j]){
+			i:=i+1;
+		}
+		j:=j+1;
+	}
 
     if (i == n){
         b := true;
@@ -1210,32 +1193,6 @@ method mContained_Correct(v:array<int>,w:array<int>,n:int,m:int) returns (b:bool
 predicate beq2(a: array<int>, b: array<int>, k1: int, k2: int)
 {
     forall i :: 0 <= k1 <= i <= k2 < a.Length && k2 < b.Length  ==> a[i] == b[i]
-}
-
-method MergeSort_Incorrect(a0: array<int>) returns (a: array<int>) //this succeeds
-    requires 0 <= a0.Length <= 10 
-    ensures sorted(a, 0, a.Length - 1)
-{
-    a := ms_Incorrect(a0, 0, a0.Length - 1);
-}
-
-method ms_Incorrect(a0: array<int>, l : int, u : int) returns (a : array<int>) //this succeeds
-    requires 0 <= l && u < a0.Length && 0 <= a0.Length <= 10 
-    ensures a.Length == a0.Length
-    ensures beq2(a, a0, 0, l - 1) 
-    ensures beq2(a, a0, u + 1, a0.Length - 1)
-    ensures sorted(a, l, u)
-{
-    var m : int; 
-    a := a0; 
-    if (l >= u) { return a; }
-    else {
-        m := (l + u) / 2; 
-        a := ms_Incorrect(a, l, m); 
-        a := ms_Incorrect(a, m + 1, u); 
-        a := merge_Incorrect(a, l, m, u); 
-        return a; 
-    }
 }
 
 method merge_Incorrect(a0 : array<int>, l : int, m : int, u : int) returns (a : array<int>)
@@ -1276,17 +1233,17 @@ method merge_Incorrect(a0 : array<int>, l : int, m : int, u : int) returns (a : 
         invariant sorted (a0, m + 1, u)
     {
         if (i > m) { 
-          buf[k] := a[j]; 
-          j := j + 1;
+            buf[k] := a[j]; 
+            j := j + 1;
         } else if (j > u) { 
-          buf[k] := a[i]; 
-          i := i + 1;
+            buf[k] := a[i]; 
+            i := i + 1;
         } else if (a[i] <= a[j]) { 
-          buf[k] := a[i]; 
-          i := i + 1;
+            buf[k] := a[i]; 
+            i := i + 1;
         } else {
-          buf[k] := a[j]; 
-          j := j + 1;
+            buf[k] := a[j]; 
+            j := j + 1;
         }
         k := k + 1;
     }
@@ -1312,32 +1269,6 @@ method merge_Incorrect(a0 : array<int>, l : int, m : int, u : int) returns (a : 
     }
 
     return a; 
-}
-
-method MergeSort_Correct(a0: array<int>) returns (a: array<int>)
-    requires 0 <= a0.Length <= 10 
-    ensures sorted(a, 0, a.Length - 1)
-{
-    a := ms_Correct(a0, 0, a0.Length - 1);
-}
-
-method ms_Correct(a0: array<int>, l : int, u : int) returns (a : array<int>) 
-    requires 0 <= l && u < a0.Length && 0 <= a0.Length <= 10 
-    ensures a.Length == a0.Length
-    ensures beq2(a, a0, 0, l - 1) 
-    ensures beq2(a, a0, u + 1, a0.Length - 1)
-    ensures sorted(a, l, u)
-{
-    var m : int; 
-    a := a0; 
-    if (l >= u) { return a; }
-    else {
-      m := (l + u) / 2; 
-      a := ms_Correct(a, l, m); 
-      a := ms_Correct(a, m + 1, u); 
-      a := merge_Correct(a, l, m, u); 
-      return a; 
-    }
 }
 
 method merge_Correct(a0 : array<int>, l : int, m : int, u : int) returns (a : array<int>)

@@ -10,7 +10,7 @@ brew install opam tree-sitter node
 # 2. Create a new opam switch and install the dependencies
 opam switch create 4.14.2
 opam switch set 4.14.2
-opam import invrepair.export
+opam switch import invrepair.export
 ```
 
 ## Build

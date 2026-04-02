@@ -11,6 +11,7 @@ brew install opam tree-sitter node
 opam switch create 4.14.2
 opam switch set 4.14.2
 opam switch import invrepair.export
+opam install z3
 ```
 
 ## Build

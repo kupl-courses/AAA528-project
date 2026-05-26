@@ -16,8 +16,8 @@ module Setting = struct
   = Stdlib.ref false
   let prune : bool Stdlib.ref
   = Stdlib.ref false
-  let examples : int Stdlib.ref 
-  = Stdlib.ref 10 
+  let examples : int Stdlib.ref
+  = Stdlib.ref 10
 
   (* FLAG - print data *)
   let printArg : bool Stdlib.ref
@@ -32,9 +32,9 @@ module Setting = struct
 
   let speclist : (Arg.key * Arg.spec * Arg.doc) list
   = [
-    ("--input",         (Arg.String (fun s -> inputFile := s)), 
+    ("--input",         (Arg.String (fun s -> inputFile := s)),
                         "File path for input program");
-    ("--z3-timeout",    (Arg.Int (fun d -> z3Timeout := d)), 
+    ("--z3-timeout",    (Arg.Int (fun d -> z3Timeout := d)),
                         "Timebudget for Z3 solver - default - 30s");
     ("--print-arg",     (Arg.Set printArg),
                         "Print out arguments of this process");
@@ -44,8 +44,10 @@ module Setting = struct
                         "Print out CFG of input program in dot");
     ("--verbose",       (Arg.Set verbose),
                         "Print out CFG of input program in dot");
+    ("--total",         (Arg.Unit (fun () -> termination := true; partial := false)),
+                        "Check total correctness (termination)");
     ]
-  
+
   let anon_fun : string -> unit
   = fun s -> begin
     (* anon_fun function start *)
@@ -53,7 +55,7 @@ module Setting = struct
     | _     -> invalid_arg "invalid option"
     (* anon_fun function end *)
   end
-  
+
   let usage_msg : string
   = "verifier [--input] file [options]"
 
@@ -82,13 +84,13 @@ type t = {
   z3Timeout: int;
   partial: bool;
   termination: bool;
-  repair: bool; 
-  prune: bool; 
-  examples: int; 
+  repair: bool;
+  prune: bool;
+  examples: int;
   printArg: bool;
   printAdt: bool;
   printCfg: bool;
-  verbose: bool; 
+  verbose: bool;
 }
 
 let create : unit -> unit
@@ -105,18 +107,18 @@ let read : unit -> t
 = let open Setting in
   fun () -> begin
   (* read function start *)
-  { 
+  {
     inputFile=(!inputFile);
     z3Timeout=(!z3Timeout);
     partial=(!partial);
     termination=(!termination);
-    repair=(!repair); 
-    prune=(!prune); 
-    examples=(!examples); 
+    repair=(!repair);
+    prune=(!prune);
+    examples=(!examples);
     printArg=(!printArg);
-    printAdt=(!printAdt); 
-    printCfg=(!printCfg); 
-    verbose=(!verbose); 
+    printAdt=(!printAdt);
+    printCfg=(!printCfg);
+    verbose=(!verbose);
   }
   (* read function end *)
 end

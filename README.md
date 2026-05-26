@@ -22,5 +22,9 @@ make
 
 ## Run
 ```bash
+# partial correctness
 dune exec -- ./main.exe --input benchmarks/all.dfy 
+
+# total correctness
+dune exec -- ./main.exe --input benchmarks/termination.dfy --total
 ```
